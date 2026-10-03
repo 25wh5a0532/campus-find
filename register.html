@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – CampusFind</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav id="main-nav"></nav>
+
+  <main class="auth-wrap">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🎓</div>
+        <h2>Create Account</h2>
+        <p>Join CampusFind to report and recover items</p>
+      </div>
+
+      <div class="form-error" id="form-error"></div>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name"
+                 placeholder="Your full name" autocomplete="name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" name="email"
+                 placeholder="you@campus.edu" autocomplete="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password <span class="required">*</span></label>
+          <input type="password" id="password" name="password"
+                 placeholder="At least 6 characters" autocomplete="new-password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+          <input type="password" id="confirm-password" name="confirm-password"
+                 placeholder="Re-enter your password" autocomplete="new-password" required />
+        </div>
+
+        <button type="submit" class="btn btn-indigo btn-full btn-lg" id="register-btn">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-alt">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><div class="nav-logo">🔍</div>CampusFind</div>
+      <hr class="footer-divider" />
+      <p class="footer-copy">© 2026 CampusFind. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      App.renderNav('register');
+
+      // If already logged in, redirect to dashboard
+      Auth.redirectIfLoggedIn('dashboard.html');
+
+      document.getElementById('register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        App.clearFormError('form-error');
+
+        const name            = document.getElementById('name').value;
+        const email           = document.getElementById('email').value;
+        const password        = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        const btn = document.getElementById('register-btn');
+        btn.textContent = 'Creating account…';
+        btn.disabled = true;
+
+        const result = Auth.register({ name, email, password, confirmPassword });
+
+        if (result.ok) {
+          App.toast('Account created successfully! Please log in.', 'success');
+          setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+        } else {
+          App.showFormError('form-error', result.error);
+          btn.textContent = 'Create Account';
+          btn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

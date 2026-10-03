@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusFind – Campus Lost & Found</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="main-nav"></nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-tag">🎓 Campus Lost &amp; Found Platform</div>
+      <h1>Find What Matters Most</h1>
+      <p>Reuniting students, staff, and faculty with their lost belongings — fast, simple, and campus-wide.</p>
+
+      <!-- Search bar -->
+      <div class="hero-search">
+        <input type="text" id="hero-search" placeholder="Search for a lost or found item…" />
+        <button onclick="heroSearch()">Search</button>
+      </div>
+
+      <!-- CTA buttons -->
+      <div class="hero-ctas">
+        <a href="report-lost.html" class="btn btn-outline-white">📋 Report Lost</a>
+        <a href="report-found.html" class="btn btn-outline-white">🔍 Report Found</a>
+      </div>
+
+      <!-- Dynamic stats — calculated from localStorage -->
+      <div class="hero-stats" id="hero-stats">
+        <div class="stat-pill">
+          <div class="stat-pill-value" id="hs-total">0</div>
+          <div class="stat-pill-label">Total Reports</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-value" id="hs-lost">0</div>
+          <div class="stat-pill-label">Items Lost</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-value" id="hs-found">0</div>
+          <div class="stat-pill-label">Items Found</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Reports -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header-row">
+        <div>
+          <h2>Recently Reported</h2>
+          <p>The latest lost and found items from your campus</p>
+        </div>
+        <a href="browse.html" class="btn btn-outline btn-sm">View All →</a>
+      </div>
+      <div class="items-grid" id="recent-items"></div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>How It Works</h2>
+        <p>Three simple steps to reunite with your belongings</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon step-icon-blue">📋</div>
+          <h3>1. Report It</h3>
+          <p>Submit a lost or found report with item details and location.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon-teal">🔍</div>
+          <h3>2. Browse &amp; Match</h3>
+          <p>Search community listings to find your item or identify the owner.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon-green">🤝</div>
+          <h3>3. Reunite</h3>
+          <p>Contact the reporter and arrange a safe handover on campus.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Browse by Category -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header-row">
+        <div>
+          <h2>Browse by Category</h2>
+          <p>Find items by type</p>
+        </div>
+        <a href="browse.html" class="btn btn-outline btn-sm">All Items →</a>
+      </div>
+      <div class="category-grid">
+        <div class="category-chip" onclick="browseCat('electronics')"><span>💻</span><span>Electronics</span></div>
+        <div class="category-chip" onclick="browseCat('clothing')"><span>👕</span><span>Clothing</span></div>
+        <div class="category-chip" onclick="browseCat('accessories')"><span>⌚</span><span>Accessories</span></div>
+        <div class="category-chip" onclick="browseCat('books')"><span>📚</span><span>Books &amp; Notes</span></div>
+        <div class="category-chip" onclick="browseCat('documents')"><span>📄</span><span>Documents &amp; ID</span></div>
+        <div class="category-chip" onclick="browseCat('keys')"><span>🔑</span><span>Keys</span></div>
+        <div class="category-chip" onclick="browseCat('bags')"><span>👜</span><span>Bags &amp; Wallets</span></div>
+        <div class="category-chip" onclick="browseCat('sports')"><span>⚽</span><span>Sports</span></div>
+        <div class="category-chip" onclick="browseCat('other')"><span>📦</span><span>Other</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">🔍</div>
+        CampusFind
+      </div>
+      <p class="footer-tagline">Reuniting the campus community, one item at a time.</p>
+      <hr class="footer-divider" />
+      <p class="footer-copy">© 2026 CampusFind. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/reports.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ── Entry point routing ──────────────────────────────────────────────
+      // If already logged in → go straight to dashboard.
+      // If not logged in → go to register (first-time flow).
+      if (Auth.isLoggedIn()) {
+        window.location.replace('dashboard.html');
+        return;
+      } else {
+        window.location.replace('register.html');
+        return;
+      }
+
+      App.renderNav('home');
+
+      // Load dynamic stats
+      const stats = CampusData.getStats();
+      document.getElementById('hs-total').textContent = stats.total;
+      document.getElementById('hs-lost').textContent  = stats.lost;
+      document.getElementById('hs-found').textContent = stats.found;
+
+      // Load recent items (last 6)
+      const recent = [...CampusData.getReports()]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 6);
+
+      const grid = document.getElementById('recent-items');
+      if (recent.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state full-width">
+            <div class="empty-icon">📋</div>
+            <p>No reports have been submitted yet. Be the first to report!</p>
+            <a href="report-lost.html" class="btn btn-primary">Report Lost Item</a>
+          </div>`;
+      } else {
+        grid.innerHTML = recent.map(r => renderReportCard(r)).join('');
+      }
+    });
+
+    function heroSearch() {
+      const q = document.getElementById('hero-search').value.trim();
+      window.location.href = q
+        ? `browse.html?q=${encodeURIComponent(q)}`
+        : 'browse.html';
+    }
+
+    document.getElementById('hero-search')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') heroSearch();
+    });
+
+    function browseCat(cat) {
+      window.location.href = `browse.html?cat=${encodeURIComponent(cat)}`;
+    }
+  </script>
+</body>
+</html>

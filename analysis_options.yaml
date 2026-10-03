@@ -1,0 +1,18 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: true
+    use_key_in_widget_constructors: true
+    sort_child_properties_last: true
+    # prefer_const rules are intentionally disabled because many constructors
+    # reference non-const values (e.g. AppConstants, theme data, runtime values).
+    prefer_const_constructors: false
+    prefer_const_declarations: false
+    prefer_const_literals_to_create_immutables: false
+    unnecessary_const: false
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"

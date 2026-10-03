@@ -1,0 +1,12 @@
+{
+  "name": "CampusFind",
+  "short_name": "CampusFind",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1A237E",
+  "theme_color": "#1A237E",
+  "description": "Lost & Found Campus Platform – CampusFind brings it back.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": []
+}

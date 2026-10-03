@@ -1,0 +1,32 @@
+# ── Flutter generated / build artifacts ───────────────────────────────────────
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# ── Dart tool cache ────────────────────────────────────────────────────────────
+*.dart_tool/
+
+# ── IDE files ─────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# ── OS generated files ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Node (if ever added) ──────────────────────────────────────────────────────
+node_modules/
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+.env.*
